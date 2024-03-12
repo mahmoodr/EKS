@@ -11,7 +11,7 @@ aws cloudformation deploy \
     --template-file iam-policy.yaml \
     --capabilities CAPABILITY_IAM
 
-
+##attaching the role policy of the created eks nodegroup iam role to the created loadbalancer controller policy
 aws iam attach-role-policy \
 --role-name $(aws cloudformation list-exports --query "Exports[?contains(Name, 'nodegroup-eks-node-group::InstanceRoleARN')].Value" --output text | xargs | cut -d "/" -f 2) 
 --policy-arn $(aws cloudformation describe-stacks --stack-name aws-load-balancer-iam-policy --query "Stacks[*].Outputs[?OutputKey=='IamPolicyArn'].OutputValue" --output text | xargs)
